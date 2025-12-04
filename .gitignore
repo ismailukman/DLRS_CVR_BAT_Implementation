@@ -1,0 +1,21 @@
+# macOS files
+.DS_Store
+
+# Large model files
+model/pretrained_DLRS_CVR_BAT_model.pt
+
+# Large neuroimaging files
+preprocessing/spm12/toolbox/suit-3.5/priors/TPM_SUIT.nii
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+
+# Jupyter Notebook
+.ipynb_checkpoints

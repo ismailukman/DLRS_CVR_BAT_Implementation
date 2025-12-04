@@ -1,0 +1,17 @@
+
+
+project_root/
+├── data/
+│   ├── subject1/
+│   │   └── DLRS_input/
+│   │       ├── DLRS_input_layer_000.nii
+│   │       ├── DLRS_input_layer_001.nii
+│   │       └── ...
+│   ├── subject2/
+│   │   └── DLRS_input/
+│   │       ├── DLRS_input_layer_000.nii
+│   │       └── ...
+│   └── output/              ← will be auto-created by script
+├── model/
+│   └── pretrained_DLRS_CVR_BAT_model.pt
+└── run_DLRS_CVR_BAT.py
