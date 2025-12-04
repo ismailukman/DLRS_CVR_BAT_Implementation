@@ -222,30 +222,6 @@ Visualize with:
 - **Typical range:** -5 to +5 seconds
 - **Clinical use:** Detects perfusion delays indicating stenosis or collateral flow
 
----
-
-## Troubleshooting
-
-### Issue: "Mismatch between number of slices"
-**Solution:** Your BOLD data has a different number of slices than specified in `slice_order_RS.txt`.
-Check actual slice count: Use MATLAB or FSL to verify slice dimensions, then update `slice_order_RS.txt` accordingly.
-
-### Issue: "NumPy 2.0 compatibility error"
-**Solution:** NiBabel requires NumPy < 2.0.
-```bash
-pip install "numpy<2.0" --force-reinstall
-```
-
-### Issue: "BOLD file not found"
-**Solution:** Verify file paths in `parameter_RS.txt` match your actual file structure.
-
-### Issue: "No DLRS_input folder"
-**Solution:** MATLAB preprocessing hasn't completed successfully. Check MATLAB output for errors.
-
-### Issue: "Out of memory"
-**Solution:** Reduce batch size in inference script or use CPU instead of GPU.
-
----
 
 ## File Structure
 
@@ -322,28 +298,6 @@ The 136 input channels consist of:
 **Training:** Model trained on paired hypercapnic and resting-state data
 - Supervised learning using CO2-calibrated CVR as ground truth
 - Loss function: MSE on both CVR and BAT predictions
-
----
-
-## System Requirements
-
-### Hardware
-- **Minimum:** 8 GB RAM, 2 GB GPU (optional)
-- **Recommended:** 16 GB RAM, 4+ GB GPU
-- **Storage:** ~5 GB per subject during processing
-
-### Software
-- Python 3.9
-- MATLAB (R2016b or later)
-- SPM12
-- SUIT toolbox v3.5
-
-### Operating Systems
-- Linux (tested on Ubuntu 18.04+)
-- macOS (tested on 10.14+)
-- Windows (with WSL recommended)
-
----
 
 ## Important Notes
 
@@ -423,61 +377,6 @@ If preprocessing failed partway through:
 1. Delete incomplete `DLRS_input` folder
 2. Delete intermediate files in `PreprocessedData_RS` folder
 3. Re-run preprocessing for that subject
-
----
-
-## Citing This Work
-
-If you use this pipeline in your research, please cite:
-
-```bibtex
-@article{hou2023deep,
-  title={Deep-learning-enabled brain hemodynamic mapping using resting-state fMRI},
-  author={Hou, Xirui and Guo, Pengfei and Wang, Peiying and Lin, Doris D. Y. and Detre, John A. and Rao, Hengyi and Wang, Danny J. J. and Lu, Hanzhang},
-  journal={npj Digital Medicine},
-  volume={6},
-  number={1},
-  pages={116},
-  year={2023},
-  publisher={Nature Publishing Group},
-  doi={10.1038/s41746-023-00859-y}
-}
-```
-
----
-
-## Support & Contact
-
-**For technical issues:**
-- Check the Troubleshooting section above
-- Run `python check_setup.py` for diagnostic information
-- Review MATLAB/Python console output for error messages
-
-**For scientific questions:**
-- Read the paper: https://www.nature.com/articles/s41746-023-00859-y
-- Contact: Hanzhang Lu (hanzhang.lu@jhu.edu)
-
-**For model weights:**
-- Email: hanzhang.lu@jhu.edu with a brief description of your research
-
----
-
-## License
-
-Please refer to the original paper for usage terms and conditions.
-
----
-
-## Acknowledgments
-
-This work was developed at Johns Hopkins University School of Medicine.
-
-**Key Contributors:**
-- Xirui Hou (Algorithm Development)
-- Pengfei Guo (Data Processing)
-- Hanzhang Lu (Principal Investigator)
-
-**Funding:** [Include funding sources from paper]
 
 ---
 
