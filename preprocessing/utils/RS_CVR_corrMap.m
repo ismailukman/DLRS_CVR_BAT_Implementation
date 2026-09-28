@@ -12,7 +12,7 @@ addpath([code_directory, filesep, 'spm12']);
 cutfreq=0.1164;  % cutoff frequency
 
 % Load Neuromorphometric template
-mask_mni = spm_read_vols(spm_vol([code_directory, filesep, 'labels_Neuromorphometrics', filesep, 'wlabels_Neuromorphometrics_unique.nii']));
+mask_mni = spm_read_vols(spm_vol([code_directory, filesep, 'atlas', filesep, 'labels_Neuromorphometrics', filesep, 'wlabels_Neuromorphometrics_unique.nii']));
 
 mask_mni_sub = mask_mni;
 mask_list_eff = unique(mask_mni);
