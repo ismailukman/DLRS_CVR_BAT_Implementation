@@ -103,10 +103,10 @@ for ii = 1:length(valid_subjects)
         fprintf('\n[3/3] Generating CVR correlation maps...\n');
         RS_CVR_corrMap_AFNI(data_directory, valid_subjects{ii}, code_directory);
         
-        fprintf('\n✓ SUBJECT COMPLETE: %s\n', valid_subjects{ii});
+        fprintf('\nSUBJECT COMPLETE: %s\n', valid_subjects{ii});
         
     catch ME
-        fprintf('\n✗ ERROR processing %s:\n', valid_subjects{ii});
+        fprintf('\nERROR processing %s:\n', valid_subjects{ii});
         fprintf('  %s\n', ME.message);
         fprintf('  Stack: %s\n', ME.stack(1).name);
         continue;
