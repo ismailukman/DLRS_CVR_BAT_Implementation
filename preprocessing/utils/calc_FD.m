@@ -1,4 +1,16 @@
 function calc_FD(subjdir, rp_file_name, thresh_FD)
+% calc_FD  Framewise displacement and motion censoring from SPM realignment.
+%
+%   calc_FD(subjdir, rp_file_name, thresh_FD)
+%
+%   subjdir       subject directory holding the realignment parameter file
+%   rp_file_name  SPM rp_*.txt file: 3 translations then 3 rotations per volume
+%   thresh_FD     censoring threshold in mm
+%
+%   Computes FD as the sum of the absolute frame-to-frame changes in the six
+%   realignment parameters (Power et al. 2012) and flags volumes exceeding
+%   thresh_FD. The proportion flagged is the censor fraction used as a motion
+%   covariate in the group analysis.
 
 subjdir = deblank(subjdir);
 rp = [subjdir, filesep, rp_file_name];

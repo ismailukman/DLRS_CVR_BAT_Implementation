@@ -1,4 +1,21 @@
 function img3Dto2D(CVR_g_4D, prefix_mri, d, ud, lr)
+% img3Dto2D  Write a 4D volume out as per-slice 2D NIfTI files for the network.
+%
+%   img3Dto2D(CVR_g_4D, prefix_mri, d, ud, lr)
+%
+%   CVR_g_4D    4D array [x y z channel]. Channels are the 133 ROI correlation
+%               maps followed by the CVR beta0, beta1 and BAT prior.
+%   prefix_mri  output path prefix; each slice is written as <prefix><NNN>.nii
+%   d           slice direction: 1 = axial (z, slices 1:91),
+%               2 = coronal (y, slices 15:95), 3 = sagittal (x, slices 15:74)
+%   ud, lr      flip flags used to write mirrored copies for augmentation.
+%               ud = 1 flips up/down, lr = 1 flips left/right. The first digit
+%               of the output index encodes the variant: 0 = none, 1 = ud,
+%               2 = lr.
+%
+%   Each slice is zero-padded from the native 91 x 109 grid to the 96 x 112
+%   the network expects (2 rows and 1 column before, 3 rows and 2 columns
+%   after). Existing files at the target name are deleted before writing.
 
 mni_resolution = [2, 2, 2];
 mni_type = 16;

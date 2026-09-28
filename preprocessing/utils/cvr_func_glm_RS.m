@@ -1,4 +1,22 @@
 function [coefs, Yp, Xcomp, res, se] = cvr_func_glm_RS(X,Y,Z)
+% cvr_func_glm_RS  Least-squares fit of a BOLD time course against a
+% regressor plus motion nuisance terms.
+%
+%   [coefs, Yp, Xcomp, res, se] = cvr_func_glm_RS(X, Y, Z)
+%
+%   X   regressor of interest (CO2 surrogate time course)
+%   Y   voxel or ROI BOLD time course
+%   Z   nuisance regressors, typically the 6 realignment parameters. Truncated
+%       to match X if longer; an error is raised if shorter.
+%
+%   The design is [X, Z, Z.^2] mean-centred with a constant term appended, so
+%   the first coefficient is the response to X after motion is accounted for.
+%
+%   coefs   fitted coefficients
+%   Yp      predicted time course
+%   Xcomp   design matrix actually used
+%   res     residuals
+%   se      standard errors of the coefficients
 
 warning off
 

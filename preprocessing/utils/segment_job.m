@@ -1,4 +1,14 @@
 function segment_job(mprimage, tpm_loc)
+% segment_job  SPM12 unified segmentation of a structural image.
+%
+%   segment_job(mprimage, tpm_loc)
+%
+%   mprimage  structural (MPRAGE) image to segment
+%   tpm_loc   folder holding SPM's TPM.nii tissue probability maps
+%
+%   Runs the SPM12 segmentation batch and writes native-space tissue classes
+%   plus the forward deformation field used later to normalise functional
+%   data to MNI space.
 
 matlabbatch{1}.spm.spatial.preproc.channel.vols = {[mprimage ',1']};
 matlabbatch{1}.spm.spatial.preproc.channel.biasreg = 0.001;
