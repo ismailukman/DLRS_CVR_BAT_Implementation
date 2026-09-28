@@ -34,7 +34,8 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PROJ = os.path.dirname(HERE)
+# This script lives in src/analysis, so the project root is two levels up.
+PROJ = os.path.dirname(os.path.dirname(HERE))
 FIG = os.path.join(PROJ, "figure")
 
 HC_COLOR, SCI_COLOR = "#4DBEEE", "#FF6B6B"

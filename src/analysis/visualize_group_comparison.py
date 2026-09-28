@@ -181,7 +181,9 @@ def compute_subject_stats(cvr_data, bat_data, brain_vox):
 
 
 def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # This script lives in src/analysis, so the project root is two levels up.
+    script_dir = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))))
     data_dir = os.path.join(script_dir, 'data')
     output_dir = os.path.join(data_dir, 'output')
     figure_dir = os.path.join(script_dir, 'figure')

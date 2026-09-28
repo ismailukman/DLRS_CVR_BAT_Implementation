@@ -1,5 +1,13 @@
+# Inference
 torch==2.0.1
-nibabel==5.1.0
-numpy<2.0,>=1.23.0
 adabelief-pytorch==0.2.1
-matplotlib==3.7.1
+nibabel>=5.1.0
+numpy>=1.23.0,<2.0
+
+# Group analysis and figures (src/analysis)
+scipy>=1.10
+matplotlib>=3.7
+openpyxl>=3.1
+
+# Cortical surface rendering (region216_surface_figure.py only)
+nilearn>=0.10

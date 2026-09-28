@@ -33,7 +33,8 @@ from matplotlib.lines import Line2D
 from scipy import stats as sp_stats
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PROJ = os.path.dirname(HERE)
+# This script lives in src/analysis, so the project root is two levels up.
+PROJ = os.path.dirname(os.path.dirname(HERE))
 FIG = os.path.join(PROJ, "figure")
 
 ORDER = ["Visual", "Somatomotor", "DorsAttn", "VentAttn/Sal",

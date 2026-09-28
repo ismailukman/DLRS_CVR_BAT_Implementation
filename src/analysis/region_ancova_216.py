@@ -50,7 +50,8 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import TwoSlopeNorm
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PROJ = os.path.dirname(HERE)
+# This script lives in src/analysis, so the project root is two levels up.
+PROJ = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, PROJ)
 
 import analyze_network_atlases as ana      # atlas paths, grid, resampling

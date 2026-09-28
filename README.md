@@ -59,11 +59,13 @@ Group processing expects `data/HC_subj/` and `data/SCI_subj/`:
 ```bash
 matlab -nodisplay -r "rs_running_groups; exit"
 python src/DLRS_CVR_BAT_inference.py
+python src/analysis/visualize_results.py
 ```
 
 ## Analysis
 
-Scripts in `src/analysis/` read the DLRS maps and write to `figure/`.
+Scripts in `src/analysis/` read the DLRS maps and write to `figure/`. Run them
+from the project root, for example `python src/analysis/group_ancova.py`.
 
 | Script | Output |
 |---|---|
@@ -76,6 +78,7 @@ Scripts in `src/analysis/` read the DLRS maps and write to `figure/`.
 | `region216_network_figure.py` | 216 parcels grouped by resting-state network |
 | `region216_surface_figure.py` | per-region effect on the cortical surface (needs nilearn) |
 | `slice_vs_volume_mean.py` | mid-axial slice versus through-brain mean |
+| `visualize_results.py` | per-subject CVR and BAT maps for a quick check |
 
 ## Notes
 

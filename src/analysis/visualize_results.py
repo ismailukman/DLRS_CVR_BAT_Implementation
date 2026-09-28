@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Visualize DLRS CVR and BAT Results
-Creates grid: subjects × 3 maps (Anatomy, CVR, BAT)
+Creates grid: subjects x 3 maps (Anatomy, CVR, BAT)
 """
 
 import os
@@ -91,7 +91,9 @@ def clean_mask_slice(mask_2d):
 
 def main():
     # Paths - resolve relative to script location
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # This script lives in src/analysis, so the project root is two levels up.
+    script_dir = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))))
     data_dir = os.path.join(script_dir, 'data')
     output_dir = os.path.join(data_dir, 'output')
 
@@ -219,7 +221,7 @@ def main():
             print(f"  CVR Map: No non-zero voxels (subject not processed?)", flush=True)
         else:
             print(f"  CVR Map:", flush=True)
-            print(f"    Mean ± SD: {cvr_brain.mean():.3f} ± {cvr_brain.std():.3f} a.u.", flush=True)
+            print(f"    Mean +/- SD: {cvr_brain.mean():.3f} +/- {cvr_brain.std():.3f} a.u.", flush=True)
             print(f"    Range: [{cvr_brain.min():.3f}, {cvr_brain.max():.3f}]", flush=True)
             print(f"    Median: {np.median(cvr_brain):.3f}", flush=True)
 
@@ -227,7 +229,7 @@ def main():
             print(f"  BAT Map: No non-zero voxels (subject not processed?)", flush=True)
         else:
             print(f"  BAT Map:", flush=True)
-            print(f"    Mean ± SD: {bat_brain.mean():.2f} ± {bat_brain.std():.2f} a.u.", flush=True)
+            print(f"    Mean +/- SD: {bat_brain.mean():.2f} +/- {bat_brain.std():.2f} a.u.", flush=True)
             print(f"    Range: [{bat_brain.min():.2f}, {bat_brain.max():.2f}]", flush=True)
             print(f"    Median: {np.median(bat_brain):.2f}", flush=True)
 

@@ -46,7 +46,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PROJ = os.path.dirname(HERE)
+# This script lives in src/analysis, so the project root is two levels up.
+PROJ = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, PROJ)
 
 import visualize_group_comparison as V     # display constants + helpers

@@ -39,7 +39,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+# This script lives in src/analysis, so the project root is two levels up.
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA = os.path.join(ROOT, 'data')
 OUT = os.path.join(DATA, 'output')
 FIG = os.path.join(ROOT, 'figure')
