@@ -41,7 +41,8 @@ pip install -r requirements.txt
 ```
 
 Also needed: Docker with `nipreps/fmriprep:25.2.6` and a FreeSurfer license,
-dcm2niix v1.0.20230411, AFNI, MATLAB with [SPM25](https://github.com/spm/spm)
+dcm2niix v1.0.20230411, AFNI (only `3dToutcount`, for outlier censoring),
+MATLAB with [SPM25](https://github.com/spm/spm)
 (25.01.02) in `preprocessing/spm12/` (the code expects this folder name), and
 the pretrained weights in `model/`.
 
