@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.9-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.0-EE4C2C?logo=pytorch&logoColor=white)
-![MATLAB](https://img.shields.io/badge/MATLAB-SPM12-0076A8)
+[![SPM25](https://img.shields.io/badge/MATLAB-SPM25-0076A8)](https://github.com/spm/spm)
 [![fMRIPrep](https://img.shields.io/badge/fMRIPrep-25.2.6-4C9A2A)](https://github.com/nipreps/fmriprep)
 ![BIDS](https://img.shields.io/badge/data-BIDS-F2A900)
 ![Modality](https://img.shields.io/badge/MRI-resting--state%20fMRI-6A5ACD)
@@ -41,7 +41,8 @@ pip install -r requirements.txt
 ```
 
 Also needed: Docker with `nipreps/fmriprep:25.2.6` and a FreeSurfer license,
-dcm2niix v1.0.20230411, AFNI, MATLAB with SPM12 in `preprocessing/spm12/`, and
+dcm2niix v1.0.20230411, AFNI, MATLAB with [SPM25](https://github.com/spm/spm)
+(25.01.02) in `preprocessing/spm12/` (the code expects this folder name), and
 the pretrained weights in `model/`.
 
 Atlases go in `preprocessing/atlas/`:
@@ -71,6 +72,10 @@ python src/analysis/make_figures.py
 Esteban O, Markiewicz CJ, Blair RW, Moodie CA, Isik AI, Erramuzpe A, et al.
 fMRIPrep: a robust preprocessing pipeline for functional MRI. Nat Methods.
 2019;16(1):111-6. doi:10.1038/s41592-018-0235-4
+
+Tierney TM, Alexander NA, Ashburner J, Avila NL, Balbastre Y, Barnes G, et al.
+SPM 25: open source neuroimaging analysis software. J Open Source Softw.
+2025;10(110):8103. doi:10.21105/joss.08103
 
 Hou X, Guo P, Wang P, Liu P, Lin DDM, Fan H, et al. Deep-learning-enabled brain
 hemodynamic mapping using resting-state fMRI. NPJ Digit Med. 2023;6(1):116.
