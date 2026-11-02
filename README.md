@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.9-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.0-EE4C2C?logo=pytorch&logoColor=white)
 ![MATLAB](https://img.shields.io/badge/MATLAB-SPM12-0076A8)
-![fMRIPrep](https://img.shields.io/badge/fMRIPrep-25.2.6-4C9A2A)
+[![fMRIPrep](https://img.shields.io/badge/fMRIPrep-25.2.6-4C9A2A)](https://github.com/nipreps/fmriprep)
 ![BIDS](https://img.shields.io/badge/data-BIDS-F2A900)
 ![Modality](https://img.shields.io/badge/MRI-resting--state%20fMRI-6A5ACD)
 
@@ -28,6 +28,11 @@ raw scans (PAR/REC, DICOM)
 Model outputs are in arbitrary units. Display ranges: CVR [-0.8, 0.8], BAT [-1.2, 1.2].
 
 ## Preprocessing
+
+Preprocessing uses [fMRIPrep](https://github.com/nipreps/fmriprep) 25.2.6
+(Esteban et al., 2019), run unmodified from the `nipreps/fmriprep:25.2.6` Docker
+image. The scripts in `fmriprep/` prepare its input and use its output; they do
+not change fMRIPrep itself.
 
 | Step | Setting |
 |---|---|
@@ -145,7 +150,11 @@ which is not tracked. Tables are written to `results/` (not tracked).
 
 ![Figure 3](figure/fig3_regional_effects.png)
 
-## Reference
+## References
+
+Esteban O, Markiewicz CJ, Blair RW, Moodie CA, Isik AI, Erramuzpe A, et al.
+fMRIPrep: a robust preprocessing pipeline for functional MRI. Nat Methods.
+2019;16(1):111-6. doi:10.1038/s41592-018-0235-4
 
 Hou X, Guo P, Wang P, Liu P, Lin DDM, Fan H, et al. Deep-learning-enabled brain
 hemodynamic mapping using resting-state fMRI. NPJ Digit Med. 2023;6(1):116.
