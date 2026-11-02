@@ -14,6 +14,12 @@ if nargin>9
     outpath_temp = varargin{10};
 end
 rp_data = varargin{11};
+% optional censor mask (1 = keep), used in the delay search; empty = all volumes
+if nargin > 11
+    keep = varargin{12};
+else
+    keep = [];
+end
 
 minDelay=delaypara(1);
 maxDelay=delaypara(2);
@@ -88,7 +94,7 @@ for wctr = 1:length(sections)
         sig = smooth(sig, 10, 'sgolay', 5);
         sig = [TR*(0:length(sig)-1)',sig];
         % Initial        
-        optDelay = cvr_func_findCO2delay_RS(sig, TR, etco2timecourse, rp_data, [minDelay maxDelay],0,0,1);
+        optDelay = cvr_func_findCO2delay_RS(sig, TR, etco2timecourse, rp_data, [minDelay maxDelay],0,0,1,'',0,keep);
         voxdelay(k)=optDelay;
         voxoptEtCO2 = cvr_func_interpTimecourse(etco2timecourse,optDelay,nVol,TR);
         [coefs, Yp, ~, ~] = cvr_func_glm(voxoptEtCO2,sig(:,2));

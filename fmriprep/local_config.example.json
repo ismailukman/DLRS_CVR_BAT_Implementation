@@ -1,0 +1,57 @@
+{
+  "decisions": {
+    "<intake_folder>": {
+      "max_bold_runs": 2,
+      "note": "keep only the first two resting runs"
+    },
+    "<intake_folder_2>": {
+      "bids_label": "sci00",
+      "session": "2",
+      "note": "second visit stored in its own folder"
+    },
+    "<intake_folder_3>": {
+      "skip": true,
+      "note": "duplicate of another folder"
+    },
+    "<intake_folder_4>": {
+      "nifti_bold": [
+        "<file>_2_1.nii",
+        "<file>_3_1.nii"
+      ],
+      "nifti_tr": 2.0,
+      "dicom_dir": "MR",
+      "dicom_anat": [
+        601
+      ],
+      "note": "resting runs only as NIfTI"
+    },
+    "<intake_folder_5>": {
+      "dicom_dir": ".",
+      "dicom_func": [
+        201,
+        301
+      ],
+      "dicom_anat": [
+        801
+      ],
+      "note": "BOLD only as DICOM"
+    },
+    "<intake_folder_6>": {
+      "skip_files": [
+        "<file>.par"
+      ],
+      "note": "exclude one run"
+    },
+    "<intake_folder_7>": {
+      "bids_label": "sci00",
+      "source": "/path/to/session/outside/the/intake",
+      "dicom_files_func": [
+        "<series>_RestingState.dcm"
+      ],
+      "dicom_files_anat": [
+        "<series>_MPRAGE.dcm"
+      ],
+      "note": "session stored elsewhere; one enhanced DICOM file per series"
+    }
+  }
+}

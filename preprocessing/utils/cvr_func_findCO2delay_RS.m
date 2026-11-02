@@ -18,6 +18,13 @@ else
     globalBoldFlag = 0;
 end
 
+% optional censor mask (1 = keep); empty means all volumes
+if length(varargin) > 2
+    keep = varargin{3};
+else
+    keep = [];
+end
+
 samples = length(delay_range(1):delayIteration:delay_range(2));
 % samples = 31;
 stepdly = 0.01; % Unit: 0.5 s
@@ -32,7 +39,7 @@ dynnum  = size(boldcurve,1);
 bbs = [];
 for ii = 1:samples
     etco2curve = cvr_func_interpTimecourse(etco2timecourse,delays(ii),dynnum,tr); 
-    [bb, Yp, Xp, res, se] = cvr_func_glm_RS(etco2curve, boldcurve(:,2), rp_data);
+    [bb, Yp, Xp, res, se] = cvr_func_glm_RS(etco2curve, boldcurve(:,2), rp_data, keep);
    
     coeff_co2(ii) = bb(1)/se(1);
     

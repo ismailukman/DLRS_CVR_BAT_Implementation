@@ -4,10 +4,10 @@ adabelief-pytorch==0.2.1
 nibabel>=5.1.0
 numpy>=1.23.0,<2.0
 
-# Group analysis and figures (src/analysis)
+# fMRIPrep helpers, group analysis and figures
 scipy>=1.10
+pandas>=2.0
 matplotlib>=3.7
+pillow>=9.0
 openpyxl>=3.1
-
-# Cortical surface rendering (region216_surface_figure.py only)
 nilearn>=0.10

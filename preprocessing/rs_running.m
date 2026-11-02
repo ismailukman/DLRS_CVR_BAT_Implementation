@@ -1,22 +1,24 @@
-%% DLRS_CVR_BAT - AFNI Preprocessed Input Mode
-% 
-% This script processes AFNI-preprocessed resting-state fMRI data
-% using the DLRS_CVR_BAT pipeline
+%% DLRS_CVR_BAT - Original SPM Pipeline (Raw BOLD Input)
 %
-% Input files required:
-%   - errts.*.r01.fanaticor+tlrc.nii.gz (AFNI preprocessed, run 1)
-%   - errts.*.r02.fanaticor+tlrc.nii.gz (AFNI preprocessed, run 2)
+% This script processes raw resting-state fMRI data (func_run1_df.nii)
+% through the full SPM preprocessing pipeline:
+%   1. Realignment
+%   2. Slice timing correction
+%   3. Coregistration (T1 to BOLD)
+%   4. Segmentation (T1)
+%   5. Normalization to MNI 2mm space (91x109x91)
+%   6. Brain mask creation
+%   7. BAT estimation (cerebellum surrogate)
+%   8. ROI correlation map generation (136 channels)
+%   9. DLRS_input feature map creation
 %
-% After AFNI_to_SPM_pipeline.sh conversion, this script will:
-%   1. Extract cerebellum signal as CO2 surrogate
-%   2. Calculate BAT (bolus arrival time) maps
-%   3. Generate ROI correlation maps (136 channels)
-%   4. Create DLRS_input feature maps for deep learning inference
+% Required files in data/<subject>/PreprocessedData/:
+%   - func_run1_df.nii   (raw defaced BOLD, native space)
+%   - struct_rf.nii      (T1 structural)
 %
-% Usage in MATLAB:
-%   cd preprocessing
-%   rs_running
-%   exit
+% Required files in data/<subject>/:
+%   - parameter_RS.txt   (pipeline parameters)
+%   - slice_order_RS.txt (slice acquisition order)
 
 clc;
 clear all;
@@ -26,59 +28,56 @@ close all;
 [code_directory, ~, ~] = fileparts(mfilename('fullpath'));
 addpath(code_directory);
 addpath([code_directory, filesep, 'utils']);
+addpath(genpath([code_directory, filesep, 'spm12']));
 
 [parent_directory, ~, ~] = fileparts(code_directory);
 data_directory = [parent_directory, filesep, 'data'];
 
-%% Find subjects with AFNI preprocessed data
+%% Find subjects with raw BOLD data
 subfolder = dir(data_directory);
 subfolder(ismember({subfolder.name}, {'.', '..', '.gitkeeper', 'output', '.DS_Store'})) = [];
 subfolder = subfolder([subfolder.isdir]);
 
-% Find subjects (sub-*)
 valid_subjects = {};
 for jj = 1:length(subfolder)
     if startsWith(subfolder(jj).name, 'sub-')
         subject_dir = [data_directory, filesep, subfolder(jj).name];
-        
-        % Check for AFNI errts files (.nii or .nii.gz) or already concatenated file
-        has_errts = ~isempty(dir([subject_dir, filesep, 'errts.*.r01.*fanaticor*.nii*']));
-        has_combined = exist([subject_dir, filesep, 'func_run_combined.nii'], 'file');
-        
-        if has_errts || has_combined
-            valid_subjects{end+1} = subfolder(jj).name;
-            
-            % Ensure parameter file exists with correct AFNI settings
-            param_file = [subject_dir, filesep, 'parameter_RS.txt'];
-            if ~exist(param_file, 'file')
-                fprintf('  Creating parameter_RS.txt for %s\n', subfolder(jj).name);
-                fid = fopen(param_file, 'w');
-                fprintf(fid, '"UserInput" : {\n');
-                fprintf(fid, '\t "SmoothFWHMmm" : 0\n');
-                fprintf(fid, '\t "TRs" : 2.0\n');
-                fprintf(fid, '\t "mprageFileName" : ""\n');
-                fprintf(fid, '\t "boldFileName_RS" : ""\n');
-                fprintf(fid, '\t "sliceOrderFile_RS" : ""\n');
-                fprintf(fid, '\t "refSlice" : 1\n');
-                fprintf(fid, '\t "afniPreprocessed" : 1\n');
-                fprintf(fid, '}\n');
-                fclose(fid);
+        preproc_dir = [subject_dir, filesep, 'PreprocessedData'];
+
+        % Check for raw BOLD and structural files
+        has_bold = exist([preproc_dir, filesep, 'func_run1_df.nii'], 'file');
+        has_struct = exist([preproc_dir, filesep, 'struct_rf.nii'], 'file');
+        has_params = exist([subject_dir, filesep, 'parameter_RS.txt'], 'file');
+
+        if has_bold && has_struct && has_params
+            % Check that this is NOT configured for AFNI mode
+            fid = fopen([subject_dir, filesep, 'parameter_RS.txt'], 'r');
+            content = fread(fid, '*char')';
+            fclose(fid);
+
+            if isempty(regexp(content, 'afniPreprocessed\s*:\s*1', 'once'))
+                valid_subjects{end+1} = subfolder(jj).name;
+            else
+                fprintf('  Skipping %s (configured for AFNI mode)\n', subfolder(jj).name);
             end
         end
     end
 end
 
 if isempty(valid_subjects)
-    fprintf('\nWARNING: No AFNI preprocessed subjects found!\n');
-    fprintf('Please run: bash preprocessing/AFNI_to_SPM_pipeline.sh <data_dir> <subject>\n');
-    fprintf('Example: bash preprocessing/AFNI_to_SPM_pipeline.sh ./data sub-03a\n\n');
+    fprintf('\nWARNING: No subjects found with raw BOLD data!\n');
+    fprintf('Expected layout:\n');
+    fprintf('  data/<subject>/PreprocessedData/func_run1_df.nii\n');
+    fprintf('  data/<subject>/PreprocessedData/struct_rf.nii\n');
+    fprintf('  data/<subject>/parameter_RS.txt\n');
+    fprintf('  data/<subject>/slice_order_RS.txt\n');
     return;
 end
 
 fprintf('\n============================================================\n');
-fprintf('DLRS_CVR_BAT - AFNI Preprocessed Input Mode\n');
+fprintf('DLRS_CVR_BAT - Original SPM Pipeline\n');
 fprintf('============================================================\n\n');
-fprintf('Found %d subject(s) with AFNI preprocessing:\n', length(valid_subjects));
+fprintf('Found %d subject(s) with raw BOLD data:\n', length(valid_subjects));
 for i = 1:length(valid_subjects)
     fprintf('  %d. %s\n', i, valid_subjects{i});
 end
@@ -89,26 +88,31 @@ for ii = 1:length(valid_subjects)
     fprintf('\n============================================================\n');
     fprintf('Processing subject %d/%d: %s\n', ii, length(valid_subjects), valid_subjects{ii});
     fprintf('============================================================\n\n');
-    
+
     try
-        % Run preprocessing
-        fprintf('[1/3] Running preprocessing...\n');
-        RS_preprocessing_AFNI(data_directory, valid_subjects{ii}, code_directory);
-        
-        % Run BAT estimation
+        % Step 1: Full SPM preprocessing (realign, slice timing, coregister, segment, normalize, mask)
+        fprintf('[1/3] Running SPM preprocessing...\n');
+        fprintf('  This includes: realignment, slice timing, coregistration,\n');
+        fprintf('  segmentation, normalization, and brain mask creation.\n');
+        fprintf('  This may take 15-30 minutes per subject.\n\n');
+        RS_preprocessing(data_directory, valid_subjects{ii}, code_directory);
+
+        % Step 2: BAT estimation using cerebellum surrogate
         fprintf('\n[2/3] Running BAT estimation...\n');
-        RS_BAT_AFNI(data_directory, valid_subjects{ii}, code_directory);
-        
-        % Run correlation map generation
+        RS_BAT(data_directory, valid_subjects{ii}, code_directory);
+
+        % Step 3: Correlation map generation (136 channels)
         fprintf('\n[3/3] Generating CVR correlation maps...\n');
-        RS_CVR_corrMap_AFNI(data_directory, valid_subjects{ii}, code_directory);
-        
+        RS_CVR_corrMap(data_directory, valid_subjects{ii}, code_directory);
+
         fprintf('\nSUBJECT COMPLETE: %s\n', valid_subjects{ii});
-        
+
     catch ME
         fprintf('\nERROR processing %s:\n', valid_subjects{ii});
-        fprintf('  %s\n', ME.message);
-        fprintf('  Stack: %s\n', ME.stack(1).name);
+        fprintf('  Message: %s\n', ME.message);
+        for kk = 1:length(ME.stack)
+            fprintf('  Stack[%d]: %s (line %d)\n', kk, ME.stack(kk).name, ME.stack(kk).line);
+        end
         continue;
     end
 end

@@ -64,7 +64,7 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
 
-    wkdir = os.path.join(project_root, 'data')
+    wkdir = os.environ.get('DLRS_DATA_DIR', os.path.join(project_root, 'data'))
     model_path = os.path.join(project_root, 'model', 'pretrained_DLRS_CVR_BAT_model.pt')
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')

@@ -1,4 +1,4 @@
-function [coefs, Yp, Xcomp, res, se] = cvr_func_glm_RS(X,Y,Z)
+function [coefs, Yp, Xcomp, res, se] = cvr_func_glm_RS(X,Y,Z,keep)
 % cvr_func_glm_RS  Least-squares fit of a BOLD time course against a
 % regressor plus motion nuisance terms.
 %
@@ -11,6 +11,9 @@ function [coefs, Yp, Xcomp, res, se] = cvr_func_glm_RS(X,Y,Z)
 %
 %   The design is [X, Z, Z.^2] mean-centred with a constant term appended, so
 %   the first coefficient is the response to X after motion is accounted for.
+%
+%   keep  optional logical vector (1 = use volume). Censored volumes are left
+%         out of the fit; omitted or empty means all volumes are used.
 %
 %   coefs   fitted coefficients
 %   Yp      predicted time course
@@ -35,6 +38,12 @@ if size(Z, 1) ~= rr
         % Z has more rows than X, truncate to match
         Z = Z(1:rr, :);
     end
+end
+
+if nargin > 3 && ~isempty(keep)
+    keep = logical(keep(1:rr));
+    X = X(keep); Y = Y(keep, :); Z = Z(keep, :);
+    rr = size(X, 1);
 end
 
 Z_diff = cat(1, zeros(1,size(Z, 2)), diff(Z));
